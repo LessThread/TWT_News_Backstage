@@ -1,9 +1,3 @@
-/**
- *  @FileCreator: StevenGao
- * @Date: 2022/2/11
- */
-
-
 import Cookies from 'js-cookie';
 
 const TokenKey = 'Token';

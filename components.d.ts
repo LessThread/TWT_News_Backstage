@@ -5,29 +5,25 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Breadcrumb: typeof import('./src/components/Breadcrumb.vue')['default']
-    Carousel: typeof import('./src/components/Carousel.vue')['default']
-    ColorBlock: typeof import('./src/components/ColorBlock.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCascader: typeof import('element-plus/es')['ElCascader']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElRadio: typeof import('element-plus/es')['ElRadio']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-    ExamsBoard: typeof import('./src/components/ExamsBoard.vue')['default']
-    FullView: typeof import('./src/components/ljc/FullView.vue')['default']
-    ImgText: typeof import('./src/components/ImgText.vue')['default']
-    LectureItem: typeof import('./src/components/LectureItem.vue')['default']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     Navtree: typeof import('./src/components/Navtree.vue')['default']
-    NewsBoard: typeof import('./src/components/NewsBoard.vue')['default']
-    PassCapsule: typeof import('./src/components/PassCapsule.vue')['default']
-    ProgressChart: typeof import('./src/components/ProgressChart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    VividClick: typeof import('./src/components/ljc/VividClick.vue')['default']
   }
 }
 

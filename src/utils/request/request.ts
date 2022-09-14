@@ -1,11 +1,7 @@
-/**
- *  @FileCreator: StevenGao
- * @Date: 2022/2/11
- */
-
 import axios from "axios";
 import type {AxiosInstance} from "axios";
-import type {MYRequestInterceptors, MYRequestConfig} from "./type";
+import type { MYRequestInterceptors, MYRequestConfig } from "./type";
+import { BASE_URL } from "./config";
 
 const DEFAULT_LOADING = true;
 
@@ -84,6 +80,7 @@ class MYRequest {
     get<T>(config: MYRequestConfig): Promise<T> {
         return this.request<T>({
             ...config,
+            baseURL:BASE_URL,
             method: "GET"
         })
     }
@@ -91,6 +88,7 @@ class MYRequest {
     post<T>(config: MYRequestConfig): Promise<T> {
         return this.request<T>({
             ...config,
+            baseURL:BASE_URL,
             method: "POST"
         })
     }

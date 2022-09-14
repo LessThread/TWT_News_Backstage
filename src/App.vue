@@ -3,7 +3,7 @@
     <MainHeader />
     <div class="content">
       <Navtree class="nav" />
-      <div id="screen" class="screen">
+      <div ref="screen" class="screen">
         <router-view></router-view>
       </div>
     </div>
@@ -19,6 +19,11 @@ export default {
     Navtree,
     MainHeader,
   },
+  methods: {
+    scrollTop() {
+      this.$refs.screen.scrollTop = 0;
+    },
+  },
 };
 </script>
 
@@ -33,6 +38,7 @@ export default {
   background-color: #f8f8f8;
   overflow: overlay; /*auto*/
   padding: 30px;
+  height: calc(100vh - 86px);
 }
 .content {
   display: flex;

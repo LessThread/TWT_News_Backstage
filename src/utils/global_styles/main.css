@@ -19,6 +19,8 @@ p {
 
 :root {
     --el-menu-active-color: #00a0e9;
+    --el-color-primary: #00a0e9;
+    --el-text-color-primary: #2a2a2a;
 }
 
 ::-webkit-scrollbar-track {
@@ -51,20 +53,28 @@ p {
 }
 
 .confirmBtn {
-    padding: 9px 32px;
-    background: #fbe5e8;
-    border-radius: 100px;
-    font-size: 20px;
-    color: #c7242f;
+    padding: 3px 20px !important;
+    background: #00A0E9 !important;
+    border-radius: 8px !important;
+    font-size: 17px !important;
+    color: #ffffff !important;
+    box-sizing: content-box !important;
 }
 
 .cancelBtn {
-    padding: 9px 32px;
-    background: #fafafa;
-    border-radius: 100px;
-    font-size: 20px;
-    color: #9f9f9f;
-    margin-right: 50px;
+    padding: 3px 20px !important;
+    background: #fafafa !important;
+    border-radius: 8px !important;
+    font-size: 17px !important;
+    color: #00A0E9 !important;
+    border: 1px solid #f0f0f0 !important;
+    box-sizing: content-box !important;
+}
+
+.dialogBtn {
+    padding: 6px 30px !important;
+    font-size: 20px !important;
+    border-radius: 16px !important;
 }
 
 .dialog-content {
@@ -135,16 +145,22 @@ p {
 .el-input__wrapper {
     border-radius: 4px !important;
     box-shadow: 0 0 0 2px #F4F3F3 !important;
+    background-color: #f8f8f8 !important;
+}
+
+.el-input__count-inner {
+    background-color: #f8f8f8 !important;
+    color: #767676 !important;
 }
 
 .el-textarea__inner:hover,
 .el-input__wrapper:hover {
-    box-shadow: 0 0 0 2px rgba(199, 36, 47, 0.5) inset !important;
+    box-shadow: 0 0 0 2px rgba(0, 160, 233, 0.5) inset !important;
 }
 
 .el-textarea__inner:focus,
 .el-input__wrapper:focus-within {
-    box-shadow: 0 0 0 2px rgba(199, 36, 47, 1) inset !important;
+    box-shadow: 0 0 0 2px rgba(0, 160, 233, 1) inset !important;
 }
 
 .el-overlay {
@@ -152,6 +168,8 @@ p {
 }
 
 .el-dialog {
+    --el-dialog-title-font-size: 36px !important;
+    --el-dialog-font-line-height: unset !important;
     display: flex;
     display: -ms-flex;
     flex-direction: column;
@@ -163,6 +181,7 @@ p {
     transform: translate(-50%, -50%);
     max-height: calc(100% - 30px);
     max-width: calc(100% - 30px);
+    width: max-content !important;
     border-radius: 8px !important;
 }
 
@@ -172,6 +191,7 @@ p {
     -ms-flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
+    text-align: center;
 }
 
 .el-sub-menu__icon-arrow {
@@ -180,4 +200,35 @@ p {
 
 .el-menu {
     border: none;
+}
+
+.is-checked .el-radio__label {
+    color: #00a0e9 !important;
+}
+
+.el-radio__label {
+    color: #767676 !important;
+}
+
+.el-upload--picture-card {
+    --el-upload-picture-card-size: 75px !important;
+}
+
+.el-upload-list--picture-card {
+    --el-upload-list-picture-card-size: 75px !important;
+}
+
+.el-pagination {
+    justify-content: center;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+    border-radius: 50% !important;
+    background-color: transparent !important;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+    background-color: var(--el-color-primary) !important;
 }
