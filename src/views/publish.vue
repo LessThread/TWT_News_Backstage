@@ -324,8 +324,8 @@ export default {
       this.status = parseInt(this.$route.query.status)
         ? [parseInt(this.$route.query.status)]
         : [];
-      this.imageId_1 = this.$route.query.coverImageId || "";
-      this.imageId_2 = this.$route.query.bannerImageId || "";
+      this.imageId_1 = this.$route.query.coverImageId || 0;
+      this.imageId_2 = this.$route.query.bannerImageId || 0;
       this.text = this.$route.query.text || "";
       this.releaseTime = this.$route.query.releaseTime || "";
       this.pageTitle = parseInt(this.$route.query.id) ? "编辑新闻" : "发布新闻";
