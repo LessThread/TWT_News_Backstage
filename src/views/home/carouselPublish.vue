@@ -74,12 +74,15 @@
     <div class="flexLine alignTop">
       <p class="tagText">添加主图：</p>
       <el-upload
+        :class="{ 'hide-upload-btn': photoHide }"
+        :limit="1"
         :file-list="fileList"
         accept="image/*"
         :auto-upload="false"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-change="fileChange"
+        :on-remove="fileRemove"
       >
         <el-icon><Plus /></el-icon>
       </el-upload>
@@ -110,6 +113,7 @@ import { getCarousel, uploadImg, updateCarousel } from "@/api/user";
 export default {
   data() {
     return {
+      photoHide: false,
       pageTitle: "轮播图发布",
       uploadLoading: false,
       id: "",
@@ -128,12 +132,19 @@ export default {
     this.dateShow();
   },
   created() {
+    window.addEventListener("beforeunload", (e) => this.beforeunloadFn(e));
     this.dateFormat();
     this.getCarousel();
     this.setInitData();
   },
   beforeDestroy() {
+    window.removeEventListener("beforeunload", (e) => this.beforeunloadFn(e));
     this.dataDestroy();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (!this.id)
+      localStorage.setItem("carouselPublishData", JSON.stringify(this.$data));
+    next();
   },
   watch: {
     $route() {
@@ -142,15 +153,28 @@ export default {
     },
   },
   methods: {
+    beforeunloadFn() {
+      if (!this.id)
+        localStorage.setItem("carouselPublishData", JSON.stringify(this.$data));
+    },
     setInitData() {
-      this.id = parseInt(this.$route.query.id) || "";
-      this.imageId = this.$route.query.imageId || 0;
-      this.articleId = this.$route.query.articleId || "";
-      this.summary = this.$route.query.summary || "";
-      this.title = this.$route.query.title || "";
-      this.pageTitle = parseInt(this.$route.query.id)
-        ? "轮播图编辑"
-        : "轮播图发布";
+      console.log(this.$route.query);
+      if (this.$route.query.id) {
+        this.id = parseInt(this.$route.query.id) || "";
+        this.imageId = this.$route.query.imageId || 0;
+        this.articleId = this.$route.query.articleId || "";
+        this.summary = this.$route.query.summary || "";
+        this.title = this.$route.query.title || "";
+        this.pageTitle = parseInt(this.$route.query.id)
+          ? "轮播图编辑"
+          : "轮播图发布";
+      } else {
+        const preData = localStorage.getItem("carouselPublishData");
+        if (preData) {
+          Object.assign(this.$data, JSON.parse(preData));
+          localStorage.removeItem("carouselPublishData");
+        }
+      }
     },
     confirm() {
       if (!this.title) {
@@ -205,14 +229,38 @@ export default {
         createDate: this.time,
       }).then(({ code: code, message: msg }) => {
         if (code === 0) {
-          this.empty();
-          this.getCarousel();
-          this.uploadLoading = false;
-          if (val) {
-            ElMessage.success("上传成功");
+          if (
+            parseInt(this.$route.query.id) &&
+            parseInt(this.$route.query.id) !== this.id
+          ) {
+            updateCarousel({
+              id: parseInt(this.$route.query.id),
+              articleId: parseInt(this.carousel[this.id - 1].articleId),
+              title: this.carousel[this.id - 1].title,
+              imageId: this.carousel[this.id - 1].imageId,
+              summary: this.carousel[this.id - 1].summary,
+              createDate: this.carousel[this.id - 1].createDate,
+            }).then(() => {
+              this.empty();
+              this.getCarousel();
+              this.uploadLoading = false;
+              if (val) {
+                ElMessage.success("上传成功");
+              } else {
+                ElMessage.success("编辑成功");
+                this.$router.push("/home/carouselManage");
+              }
+            });
           } else {
-            ElMessage.success("编辑成功");
-            this.$router.push("/home/carouselManage");
+            this.empty();
+            this.getCarousel();
+            this.uploadLoading = false;
+            if (val) {
+              ElMessage.success("上传成功");
+            } else {
+              ElMessage.success("编辑成功");
+              this.$router.push("/home/carouselManage");
+            }
           }
         } else {
           ElMessage.error(msg);
@@ -227,10 +275,14 @@ export default {
       this.summary = "";
       this.fileList = [];
       this.imageId = 0;
+      localStorage.removeItem("carouselPublishData");
     },
     fileChange(file, files) {
       this.fileList = [file];
-      console.log(file);
+      this.photoHide = true;
+    },
+    fileRemove() {
+      this.photoHide = false;
     },
     handleRemove(uploadFile, uploadFiles) {
       console.log(uploadFile, uploadFiles);

@@ -49,6 +49,11 @@ export default {
   created() {
     this.getCarousel();
   },
+  watch: {
+    $route() {
+      this.getCarousel();
+    },
+  },
   methods: {
     toEdit(item) {
       this.$router.push({

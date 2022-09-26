@@ -44,8 +44,13 @@
           </div>
         </div>
       </div>
-      <div class="newsItem">
-        <p class="newsTitle">{{ item.title }}</p>
+      <div class="newsItem" @click="toEdit(item)">
+        <p class="newsTitle">
+          <span>{{
+            item.status === 1 ? "【置顶】" : item.status === 2 ? "【隐藏】" : ""
+          }}</span>
+          {{ item.title }}
+        </p>
         <p class="newsSummary">新闻摘要</p>
         <div class="newsInfo">
           <p>
@@ -62,6 +67,8 @@
           <p>审/{{ item.reviewerName }}</p>
           <div></div>
           <p>{{ item.viewsNumber }}浏览</p>
+          <div></div>
+          <p>ID：{{ item.id }}</p>
         </div>
         <el-image
           :src="BASE_URL + '/imgbed/download/' + item.coverImageId"
@@ -141,7 +148,7 @@ export default {
     toChangeStatue(item, val) {
       changeNewsStatue({
         id: item.id,
-        status: item.status === 0 ? val : 0,
+        status: item.status === 0 ? val : item.status === val ? 0 : val,
       }).then(({ code: code, message: msg }) => {
         if (code === 0) {
           ElMessage.success(
@@ -226,6 +233,7 @@ export default {
   margin-bottom: 30px;
 }
 .newsItem {
+  cursor: pointer;
   padding: 20px;
   background-color: #fafafa;
   border: 1px solid #f0f0f0;
@@ -277,6 +285,9 @@ export default {
   font-weight: 700;
   margin-bottom: 20px;
 }
+.newsTitle span {
+  color: #00a0e9;
+}
 .newsSummary {
   font-size: 16px;
   color: #767676;
@@ -286,7 +297,7 @@ export default {
   font-size: 16px;
   color: #767676;
   display: grid;
-  grid-template-columns: 180px 110px 20px 110px 20px 110px 20px auto;
+  grid-template-columns: 180px 110px 20px 110px 20px 110px 20px 110px 20px auto;
 }
 .newsCover {
   position: absolute;

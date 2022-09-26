@@ -93,12 +93,15 @@
     <div class="flexLine alignTop">
       <p class="tagText">添加封面图：</p>
       <el-upload
+        :class="{ 'hide-upload-btn': photoHide_1 }"
+        :limit="1"
         :file-list="fileList_1"
         accept="image/*"
         :auto-upload="false"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-change="fileChange_1"
+        :on-remove="fileRemove_1"
       >
         <el-icon><Plus /></el-icon>
       </el-upload>
@@ -107,12 +110,15 @@
     <div class="flexLine alignTop">
       <p class="tagText">添加横幅图：</p>
       <el-upload
+        :class="{ 'hide-upload-btn': photoHide_2 }"
+        :limit="1"
         :file-list="fileList_2"
         accept="image/*"
         :auto-upload="false"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-change="fileChange_2"
+        :on-remove="fileRemove_2"
       >
         <el-icon><Plus /></el-icon>
       </el-upload>
@@ -179,6 +185,8 @@ import { BASE_URL } from "@/utils/request/config";
 export default {
   data() {
     return {
+      photoHide_1: false,
+      photoHide_2: false,
       page: 1,
       releaseTime: "",
       centerDialogVisible: false,
@@ -266,12 +274,19 @@ export default {
     this.dateShow();
   },
   created() {
+    window.addEventListener("beforeunload", (e) => this.beforeunloadFn(e));
     this.dateFormat();
     this.getCategory();
     this.setInitData();
   },
   beforeDestroy() {
+    window.removeEventListener("beforeunload", (e) => this.beforeunloadFn(e));
     this.dataDestroy();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (!this.id)
+      localStorage.setItem("publishData", JSON.stringify(this.$data));
+    next();
   },
   watch: {
     $route() {
@@ -280,6 +295,10 @@ export default {
     },
   },
   methods: {
+    beforeunloadFn() {
+      if (!this.id)
+        localStorage.setItem("publishData", JSON.stringify(this.$data));
+    },
     handleUploadImage(event, insertImage, files) {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
       console.log(files);
@@ -313,22 +332,32 @@ export default {
       this.inputValue = "";
     },
     setInitData() {
-      this.id = parseInt(this.$route.query.id) || "";
-      this.page = parseInt(this.$route.query.page) || "";
-      this.title = this.$route.query.title || "";
-      this.origin = this.$route.query.origin || "";
-      this.contributorName = this.$route.query.contributorName || "";
-      this.reviewerName = this.$route.query.reviewerName || "";
-      this.categoryId = parseInt(this.$route.query.categoryId) || "";
-      this.tagNameList = this.$route.query.tagNameList || [];
-      this.status = parseInt(this.$route.query.status)
-        ? [parseInt(this.$route.query.status)]
-        : [];
-      this.imageId_1 = this.$route.query.coverImageId || 0;
-      this.imageId_2 = this.$route.query.bannerImageId || 0;
-      this.text = this.$route.query.text || "";
-      this.releaseTime = this.$route.query.releaseTime || "";
-      this.pageTitle = parseInt(this.$route.query.id) ? "编辑新闻" : "发布新闻";
+      if (this.$route.query.id) {
+        this.id = parseInt(this.$route.query.id) || "";
+        this.page = parseInt(this.$route.query.page) || "";
+        this.title = this.$route.query.title || "";
+        this.origin = this.$route.query.origin || "";
+        this.contributorName = this.$route.query.contributorName || "";
+        this.reviewerName = this.$route.query.reviewerName || "";
+        this.categoryId = parseInt(this.$route.query.categoryId) || "";
+        this.tagNameList = this.$route.query.tagNameList || [];
+        this.status = parseInt(this.$route.query.status)
+          ? [parseInt(this.$route.query.status)]
+          : [];
+        this.imageId_1 = this.$route.query.coverImageId || 0;
+        this.imageId_2 = this.$route.query.bannerImageId || 0;
+        this.text = this.$route.query.text || "";
+        this.releaseTime = this.$route.query.releaseTime || "";
+        this.pageTitle = parseInt(this.$route.query.id)
+          ? "编辑新闻"
+          : "发布新闻";
+      } else {
+        const preData = localStorage.getItem("publishData");
+        if (preData) {
+          Object.assign(this.$data, JSON.parse(preData));
+          localStorage.removeItem("publishData");
+        }
+      }
     },
     confirm() {
       if (!this.title) {
@@ -480,9 +509,17 @@ export default {
     },
     fileChange_1(file, files) {
       this.fileList_1 = [file];
+      this.photoHide_1 = true;
     },
     fileChange_2(file, files) {
       this.fileList_2 = [file];
+      this.photoHide_2 = true;
+    },
+    fileRemove_1() {
+      this.photoHide_1 = false;
+    },
+    fileRemove_2() {
+      this.photoHide_2 = false;
     },
     handleRemove(uploadFile, uploadFiles) {
       console.log(uploadFile, uploadFiles);

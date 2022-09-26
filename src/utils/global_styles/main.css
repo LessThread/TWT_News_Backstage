@@ -41,6 +41,15 @@ p {
     transition: color 0.2s ease;
 }
 
+.v-md-editor__toolbar-item,
+[class*=v-md-icon-] {
+    font-size: 1.2rem !important;
+}
+
+.hide-upload-btn .el-upload-list .el-upload--picture-card {
+    display: none;
+}
+
 .noSelect {
     -webkit-user-select: none;
     -moz-user-select: none;
