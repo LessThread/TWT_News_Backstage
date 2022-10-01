@@ -34,6 +34,19 @@
         type="text"
       />
     </div>
+
+    <div class="flexLine">
+      <p class="tagText">摄影：</p>
+      <el-input
+        class="flexGrow"
+        v-model="photographerName"
+        maxlength="50"
+        placeholder="请输入新闻摄影"
+        show-word-limit
+        type="text"
+      />
+    </div>
+
     <div class="flexLine">
       <p class="tagText">审稿：</p>
       <el-input
@@ -185,6 +198,7 @@ import { BASE_URL } from "@/utils/request/config";
 export default {
   data() {
     return {
+      photographerName:"",
       photoHide_1: false,
       photoHide_2: false,
       page: 1,
@@ -340,6 +354,7 @@ export default {
         this.contributorName = this.$route.query.contributorName || "";
         this.reviewerName = this.$route.query.reviewerName || "";
         this.categoryId = parseInt(this.$route.query.categoryId) || "";
+        this.photographerName = this.$route.query.photographerName || "";
         this.tagNameList = this.$route.query.tagNameList || [];
         this.status = parseInt(this.$route.query.status)
           ? [parseInt(this.$route.query.status)]
@@ -428,7 +443,7 @@ export default {
         postNews({
           title: this.title,
           origin: this.origin,
-          contributorName: this.contributorName,
+          contributorName: this.contributorName+"$"+this.photographerName,
           reviewerName: this.reviewerName,
           status: this.status.length === 0 ? 0 : this.status[0],
           tagNameList: this.tagNameList,

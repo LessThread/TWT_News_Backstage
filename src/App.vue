@@ -3,7 +3,14 @@
     <MainHeader />
     <div class="content">
       <Navtree class="nav" />
-      <div ref="screen" class="screen">
+      <!-- 临时守卫 -->
+      <div class="TempkeyBox" v-show="!is">
+        后台管理员密码
+        <input type="passwo" v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
+        <button @click="proofreadKey(Tempkey)" >登录</button>
+      </div> 
+    <!-- 临时守卫 -->
+      <div ref="screen" class="screen" v-show="is">
         <router-view></router-view>
       </div>
     </div>
@@ -15,6 +22,12 @@
 import Navtree from "@/components/Navtree.vue";
 import MainHeader from "@/components/MainHeader.vue";
 export default {
+  data() {
+    return {
+      is:0,
+      Tempkey:"",
+    };
+  },
   components: {
     Navtree,
     MainHeader,
@@ -23,6 +36,12 @@ export default {
     scrollTop() {
       this.$refs.screen.scrollTop = 0;
     },
+    proofreadKey(Tempkey){
+      console.log(Tempkey)
+      if(Tempkey=="20000608")
+      this.is=1;
+    }
+
   },
 };
 </script>
@@ -43,4 +62,13 @@ export default {
 .content {
   display: flex;
 }
+</style>
+
+
+<style scoped>
+  .TempkeyBox{
+    position: absolute;
+    left: 40%;
+    top:30%;
+  }
 </style>
