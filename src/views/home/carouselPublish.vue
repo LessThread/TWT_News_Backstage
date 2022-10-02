@@ -74,7 +74,7 @@
     <div class="flexLine alignTop">
       <p class="tagText">添加主图：</p>
       <el-upload
-        :class="{ /* 'hide-upload-btn': photoHide */ }"
+        :class="{  'hide-upload-btn': photoHide  }"
         :limit="1"
         :file-list="fileList"
         accept="image/*"
@@ -207,6 +207,7 @@ export default {
             if (code === 0) 
             {
               this.imageId = res;
+              this.photoHide = false;
               this.updateCarousel(true);
             } 
             else 
