@@ -36,12 +36,12 @@
     </div>
 
     <div class="flexLine">
-      <p class="tagText">摄影：</p>
+      <p class="tagText">供图：</p>
       <el-input
         class="flexGrow"
         v-model="photographerName"
         maxlength="50"
-        placeholder="请输入新闻摄影"
+        placeholder="请输入新闻供图人"
         show-word-limit
         type="text"
       />
@@ -435,6 +435,10 @@ export default {
             this.imageId_2 = res[0].result;
           }
           this.postNews(true);
+          this.photographerName="";
+
+          this.photoHide_2=false;
+          this.photoHide_1=false;
         }
       });
     },

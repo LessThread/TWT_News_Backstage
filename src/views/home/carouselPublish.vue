@@ -74,7 +74,7 @@
     <div class="flexLine alignTop">
       <p class="tagText">添加主图：</p>
       <el-upload
-        :class="{ 'hide-upload-btn': photoHide }"
+        :class="{ /* 'hide-upload-btn': photoHide */ }"
         :limit="1"
         :file-list="fileList"
         accept="image/*"
@@ -198,15 +198,19 @@ export default {
         return;
       }
       this.uploadLoading = true;
-      if (this.imageId === 0) {
+      if (this.imageId === 0) 
+      {
         let formData = new FormData();
         formData.append("img", this.fileList[0].raw);
         uploadImg(formData)
           .then(({ code: code, message: msg, result: res }) => {
-            if (code === 0) {
+            if (code === 0) 
+            {
               this.imageId = res;
               this.updateCarousel(true);
-            } else {
+            } 
+            else 
+            {
               ElMessage.error(msg);
               this.uploadLoading = false;
             }
@@ -215,7 +219,9 @@ export default {
             ElMessage.error("发布失败");
             this.uploadLoading = false;
           });
-      } else {
+      } 
+      else 
+      {
         this.updateCarousel(false);
       }
     },
