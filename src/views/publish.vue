@@ -66,7 +66,7 @@
         }}</el-radio>
       </el-radio-group>
     </div>
-    <div class="flexLine">
+    <!-- <div class="flexLine">
       <p class="tagText">标签：</p>
       <el-tag
         v-for="tag in tagNameList"
@@ -95,7 +95,7 @@
       >
         + 添加标签
       </el-button>
-    </div>
+    </div> -->
     <div class="flexLine">
       <p class="tagText">其他：</p>
       <el-checkbox-group v-model="status" :min="0" :max="1">
