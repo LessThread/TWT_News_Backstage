@@ -145,7 +145,7 @@
         :toolbar="toolbar"
         :disabled-menus="[]"
         @upload-image="handleUploadImage"
-        left-toolbar="h bold italic strikethrough quote | ul ol table hr | customToolbar1 customToolbar2 customToolbar3 | link image code | undo redo clear | save export import"
+        left-toolbar="h bold italic strikethrough quote | ul ol table hr | customToolbar1 customToolbar2 customToolbar3 customToolbar4 customToolbar5 | link image code | undo redo clear | save export import"
       ></v-md-editor>
     </div>
     <div class="actionBar">
@@ -281,6 +281,40 @@ export default {
             });
           },
         },
+        customToolbar4: {
+        title: '插入一个空格',
+        icon: 'v-md-icon-tip',
+        action(editor) {
+          editor.insert(function (selected) {
+            const prefix = '(((';
+            const suffix = ')))';
+            const placeholder = '&emsp;';
+            const content = selected || placeholder;
+
+            return {
+              text: `${content}`,
+              selected: content,
+            };
+          });
+        },
+      },
+      customToolbar5: {
+        title: '换行',
+        icon: 'v-md-icon-arrow-down',
+        action(editor) {
+          editor.insert(function (selected) {
+            const prefix = '(((';
+            const suffix = ')))';
+            const placeholder = '<br>';
+            const content = selected || placeholder;
+
+            return {
+              text: `${content}`,
+              selected: content,
+            };
+          });
+        },
+      },
       },
     };
   },
