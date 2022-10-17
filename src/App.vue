@@ -6,8 +6,8 @@
       <!-- 临时守卫 -->
       <div class="TempkeyBox" v-show="!is">
         后台管理员密码
-        <input type="passwo" v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
-        <button @click="proofreadKey(Tempkey)" >登录</button>
+        <input type="password"  v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
+        <button @click="proofreadKey(Tempkey)" >确认</button>
       </div> 
     <!-- 临时守卫 -->
       <div ref="screen" class="screen" v-show="is">
@@ -32,14 +32,26 @@ export default {
     Navtree,
     MainHeader,
   },
+  created(){
+      console.log("isPassword")
+      let isPassword=localStorage.getItem("password");
+      console.log("isPassword")
+      console.log(isPassword);
+      if(isPassword==1){
+        this.is=1
+      }
+    },
   methods: {
     scrollTop() {
       this.$refs.screen.scrollTop = 0;
     },
     proofreadKey(Tempkey){
-      console.log(Tempkey)
       if(Tempkey=="20000608")
-      this.is=1;
+      {
+        this.is=1;
+        localStorage.setItem("password",1);
+      }
+      
     }
 
   },
