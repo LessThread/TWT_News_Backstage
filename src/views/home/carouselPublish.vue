@@ -12,7 +12,8 @@
         type="text"
       />
     </div>
-    <div class="flexLine">
+
+    <!-- <div class="flexLine">
       <p class="tagText">文章ID：</p>
       <el-input
         class="flexGrow"
@@ -20,7 +21,21 @@
         placeholder="请输入轮播图关联的文章ID"
         type="text"
       />
+    </div> -->
+
+    <div class="flexLine">
+      <p class="tagText">关联文章：</p>
+    <el-cascader
+      placeholder="请输入轮播图关联的文章标题"
+      :options="ArticleSelectionBox"
+      filterable
+      v-model="articleId"
+    />
+    <p class="tagText">ID：{{articleId}}</p>
     </div>
+
+
+
     <div class="flexLine">
       <p class="tagText">发布日期：</p>
       <p class="tagText">{{ time }}</p>
@@ -109,7 +124,7 @@
 </template>
 
 <script>
-import { getCarousel, uploadImg, updateCarousel } from "@/api/user";
+import { getCarousel, uploadImg, updateCarousel ,getNews } from "@/api/user";
 export default {
   data() {
     return {
@@ -126,6 +141,8 @@ export default {
       dialogImageUrl: "",
       fileList: [],
       imageId: 0,
+      ArticleSelectionBox:[],
+      bind:null,
     };
   },
   mounted() {
@@ -136,6 +153,14 @@ export default {
     this.dateFormat();
     this.getCarousel();
     this.setInitData();
+    getNews().then((d)=>{
+      for(let i=0;i<d.result.length;i++)
+      {
+        let TempArr={"value":d.result[i].id , "label":d.result[i].title};
+        console.log(TempArr);
+        this.ArticleSelectionBox.push(TempArr);
+      }
+      })
   },
   beforeDestroy() {
     window.removeEventListener("beforeunload", (e) => this.beforeunloadFn(e));
