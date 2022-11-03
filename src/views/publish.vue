@@ -236,12 +236,16 @@ import { BASE_URL } from "@/utils/request/config";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+//import { IEditorConfig} from '@wangeditor/editor'
+
+
 
 export default {
   components: { Editor, Toolbar },
   setup() {
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
+    const editorConfig = {MENU_CONF: {}}
 
     // 内容 HTML
     const valueHtml = ref('<p>hello</p>')
@@ -249,16 +253,22 @@ export default {
     // 模拟 ajax 异步获取内容
     onMounted(() => {
         setTimeout(() => {
-            valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+            valueHtml.value = '<p>Ajax 异步</p>'
         }, 1500)
     })
 
     const toolbarConfig = {}
-    const editorConfig = { 
-      placeholder: '请输入内容...' 
-    }
-
     
+    editorConfig.MENU_CONF['uploadImage'] = {
+      server: 'https://news.twt.edu.cn/imgbed/upload',
+      fieldName: 'img',
+      customInsert(res, insertFn) {
+        let surl="https://news.twt.edu.cn/imgbed/download/"+res.result;
+        // 从 res 中找到 url alt href ，然后插入图片
+        insertFn(surl,"","")
+    },
+}
+
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
@@ -270,6 +280,8 @@ export default {
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
     }
+
+    //editorConfig.MENU_CONF['uploadImage'] = {}
 
     return {
       editorRef,
