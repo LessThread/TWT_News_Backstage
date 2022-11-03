@@ -139,14 +139,51 @@
     </div>
     <div class="flexRow">
       <p class="tagText">新闻内容：</p>
-      <v-md-editor
+
+      <div>
+        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器</el-button>
+      </div>
+
+      <div v-show="MdOrText">
+        <v-md-editor
         v-model="text"
         height="32rem"
         :toolbar="toolbar"
         :disabled-menus="[]"
         @upload-image="handleUploadImage"
         left-toolbar="h bold italic strikethrough quote | ul ol table hr | customToolbar1 customToolbar2 customToolbar3 customToolbar4 customToolbar5 | link image code | undo redo clear | save export import"
-      ></v-md-editor>
+      >
+      </v-md-editor>
+      </div>
+      
+      <div v-show="!MdOrText">
+      <div style="border: 1px solid #ccc">
+        <Toolbar
+          style="border-bottom: 1px solid #ccc"
+          :editor="editorRef"
+          :defaultConfig="toolbarConfig"
+          :mode="mode"
+        />
+        <Editor
+          style="height: 400px; overflow-y: hidden;"
+          v-model="text"
+          :defaultConfig="editorConfig"
+          :mode="mode"
+          @onCreated="handleCreated"
+        />
+      </div>
+      <div style="margin-top: 10px;display: flex">
+        <textarea
+          v-model="text"
+          readonly
+          style="width: 50%; height: 200px; outline: none"
+        ></textarea>
+        <div style="margin-top: 10px ;width: 50%; height: 200px; outline: none" >
+          <p v-html="text"></p>
+        </div>
+      </div>
+    </div>
+
     </div>
     <div class="actionBar">
       <el-button
@@ -195,9 +232,60 @@
 <script>
 import { getCategory, uploadImg, postNews, updateNews } from "@/api/user";
 import { BASE_URL } from "@/utils/request/config";
+
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+
 export default {
+  components: { Editor, Toolbar },
+  setup() {
+    // 编辑器实例，必须用 shallowRef
+    const editorRef = shallowRef()
+
+    // 内容 HTML
+    const valueHtml = ref('<p>hello</p>')
+
+    // 模拟 ajax 异步获取内容
+    onMounted(() => {
+        setTimeout(() => {
+            valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+        }, 1500)
+    })
+
+    const toolbarConfig = {}
+    const editorConfig = { 
+      placeholder: '请输入内容...' 
+    }
+
+    
+
+    // 组件销毁时，也及时销毁编辑器
+    onBeforeUnmount(() => {
+        const editor = editorRef.value
+        if (editor == null) return
+        editor.destroy()
+    })
+
+    const handleCreated = (editor) => {
+      editorRef.value = editor // 记录 editor 实例，重要！
+    }
+
+    return {
+      editorRef,
+      valueHtml,
+      mode: 'default', // 或 'simple'
+      toolbarConfig,
+      editorConfig,
+      handleCreated
+    };
+
+  },
+  
+
   data() {
     return {
+      MdOrText:0,
       photographerName:"",
       photoHide_1: false,
       photoHide_2: false,
@@ -343,6 +431,9 @@ export default {
     },
   },
   methods: {
+    changeEditor(){
+      this.MdOrText=!this.MdOrText;
+    },
     beforeunloadFn() {
       if (!this.id)
         localStorage.setItem("publishData", JSON.stringify(this.$data));
