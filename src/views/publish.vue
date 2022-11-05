@@ -236,7 +236,7 @@ import { BASE_URL } from "@/utils/request/config";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import {ROOT_URL} from '@/gobal'
+import {ROOT_URL} from '@/global.js'
 //import { IEditorConfig} from '@wangeditor/editor'
 
 
