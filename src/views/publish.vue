@@ -165,7 +165,7 @@
           :mode="mode"
         />
         <Editor
-          style="height: 400px; overflow-y: hidden;"
+          style="height: 500px; overflow-y: hidden;"
           v-model="text"
           :defaultConfig="editorConfig"
           :mode="mode"
@@ -176,9 +176,9 @@
         <textarea
           v-model="text"
           readonly
-          style="width: 50%; height: 200px; outline: none"
+          style="width: 50%; height: 500px; outline: none"
         ></textarea>
-        <div style="margin-top: 10px ;width: 50%; height: 200px; outline: none" >
+        <div style="margin-top: 10px ;width: 50%; height: 500px; outline: none;overflow:scroll" >
           <p v-html="text"></p>
         </div>
       </div>
@@ -236,6 +236,7 @@ import { BASE_URL } from "@/utils/request/config";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import {ROOT_URL} from '@/gobal'
 //import { IEditorConfig} from '@wangeditor/editor'
 
 
@@ -260,10 +261,10 @@ export default {
     const toolbarConfig = {}
     
     editorConfig.MENU_CONF['uploadImage'] = {
-      server: 'https://news.twt.edu.cn/imgbed/upload',
+      server: ROOT_URL + 'imgbed/upload',
       fieldName: 'img',
       customInsert(res, insertFn) {
-        let surl="https://news.twt.edu.cn/imgbed/download/"+res.result;
+        let surl=ROOT_URL+ "imgbed/download/"+res.result;
         // 从 res 中找到 url alt href ，然后插入图片
         insertFn(surl,"","")
     },
@@ -286,7 +287,7 @@ export default {
     return {
       editorRef,
       valueHtml,
-      mode: 'default', // 或 'simple'
+      mode: 'simple', // 或 'simple'
       toolbarConfig,
       editorConfig,
       handleCreated
