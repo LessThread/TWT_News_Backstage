@@ -141,7 +141,7 @@
       <p class="tagText">新闻内容：</p>
 
       <div>
-        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器</el-button>
+        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器 当前{{MdOrText}}</el-button>
       </div>
 
       <div v-show="MdOrText">
@@ -581,6 +581,10 @@ export default {
       });
     },
     postNews(val) {
+      if(!this.MdOrText)
+      {
+        this.text = this.text + "@";
+      }
       if (val) {
         postNews({
           title: this.title,
@@ -592,7 +596,7 @@ export default {
           categoryId: this.categoryId,
           coverImageId: this.imageId_1,
           bannerImageId: this.imageId_2,
-          text: this.text,
+          text:this.text,
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
