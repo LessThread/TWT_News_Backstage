@@ -1,5 +1,41 @@
 <template>
   <div class="news" ref="news">
+
+    <el-dialog
+    v-model="dialogVisible_delete"
+    title="请确认"
+    width="30%"
+    :before-close="handleClose"
+  >
+      <span>{{dialogMessage}}</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible_delete = false;dialogVisible_delete = 0;showMessage('提示','操作已取消');diglog_item=null;">取消</el-button>
+          <el-button type="primary" @click="dialogVisible_delete = false;toDelete(diglog_item);">
+            确认
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <el-dialog
+    v-model="dialogVisible_change"
+    title="请确认"
+    width="30%"
+    :before-close="handleClose"
+  >
+      <span>{{dialogMessage}}</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible_change = false;dialogVisible_change = 0;showMessage('提示','操作已取消')">取消</el-button>
+          <el-button type="primary" @click="dialogVisible_change = false;toChangeStatue(diglog_item.item,diglog_item.val)">
+            确认
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+
     <p class="title">管理新闻</p>
     <div class="outerItem" v-for="(item, i) in newsList[page - 1]" :key="i">
       <div class="actions">
@@ -9,7 +45,7 @@
           </div>
         </div>
         <div>
-          <div class="actionBtn" title="删除" @click="toDelete(item)">
+          <div class="actionBtn" title="删除" @click="readyDelete(item)">
             <img src="../assets/delete.svg" />
           </div>
         </div>
@@ -17,7 +53,7 @@
           <div
             class="actionBtn"
             :title="item.status === 1 ? '取消置顶' : '置顶'"
-            @click="toChangeStatue(item, 1)"
+            @click="readyChangeStatue(item, 1)"
           >
             <img
               :src="
@@ -112,6 +148,12 @@ export default {
       newsList: [[]],
       categoryMap: {},
       BASE_URL: BASE_URL,
+      dialogVisible_delete:0,
+      dialogVisible_change:0,
+      dialogMessage:"",
+      dialogState_delete:0,
+      dialogState_change:0,
+      diglog_item:null,
     };
   },
   methods: {
@@ -136,6 +178,25 @@ export default {
         },
       });
     },
+    readyDelete(item){
+      this.dialogState_delete = 0;
+      this.dialogVisible_delete = true;
+      this.dialogMessage = "真的要 删除 吗？";
+      this.diglog_item = item;
+    },
+    readyChangeStatue(item,val){
+      this.dialogState_change = 0;
+      this.dialogVisible_change = true;
+      this.dialogMessage = "真的要 改变置顶状态 吗？"; 
+      this.diglog_item = {item,val};
+    },
+    showMessage(title,message){
+            ElNotification({
+              title: title,
+              message: message,
+            })
+    },
+
     toDelete(item) {
       deleteNews({ id: item.id }).then(({ code: code, message: msg }) => {
         if (code === 0) {
