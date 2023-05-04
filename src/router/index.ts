@@ -56,6 +56,13 @@ const routes = [
       title:"权限",
     },
   },
+  {
+    path: '/examination',
+    component: () => import('@/views/examination.vue'),
+    meta: {
+      title:"审核",
+    },
+  },
 ]
 
 const router = createRouter({

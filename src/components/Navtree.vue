@@ -41,6 +41,19 @@
         />
         <span class="nav-title">发布</span>
       </el-menu-item>
+      
+      <el-menu-item index="/examination">
+        <img
+          :src="
+            defaultActive.split('/')[1] === 'examination'
+              ? require('pointer_active.svg')
+              : require('pointer.svg')
+          "
+          class="nav-icon"
+        />
+        <span class="nav-title">审核</span>
+      </el-menu-item>
+
       <el-menu-item index="/news">
         <img
           :src="
@@ -74,6 +87,9 @@
         />
         <span class="nav-title">权限</span>
       </el-menu-item>
+
+
+
       <div class="nav-bottom">
         <img src="../assets/user.svg" class="nav-icon" />
         <span class="nav-title">用户</span>

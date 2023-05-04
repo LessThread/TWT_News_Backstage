@@ -98,9 +98,9 @@
     </div> -->
     <div class="flexLine">
       <p class="tagText">其他：</p>
-      <el-checkbox-group v-model="status" :min="0" :max="1">
+      <el-checkbox-group v-model="status" :min="0" :max="2">
         <el-checkbox :label="1">置顶</el-checkbox>
-        <el-checkbox :label="2">隐藏</el-checkbox>
+        <!-- <el-checkbox :label="2">隐藏</el-checkbox> -->
       </el-checkbox-group>
     </div>
     <div class="flexLine alignTop">
@@ -310,7 +310,7 @@ export default {
       pageTitle: "发布新闻",
       uploadLoading: false,
       id: "",
-      status: [],
+      status: [2],
       categoryId: "",
       title: "",
       articleId: "",
@@ -659,7 +659,7 @@ export default {
       this.reviewerName = "";
       this.categoryId = "";
       this.tagNameList = [];
-      this.status = [];
+      this.status = [2];
       this.fileList_1 = [];
       this.fileList_2 = [];
       this.imageId_1 = 0;
