@@ -141,7 +141,7 @@
       <p class="tagText">新闻内容：</p>
 
       <div>
-        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器 当前{{MdOrText}}</el-button>
+        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器 当前是{{MdOrText?"MD":"富文本"}}</el-button>
       </div>
 
       <div v-show="MdOrText">
@@ -441,6 +441,7 @@ export default {
     $route() {
       this.setInitData();
       this.getCategory();
+      
     },
   },
   methods: {
