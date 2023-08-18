@@ -6,6 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
@@ -19,6 +20,8 @@ declare module '@vue/runtime-core' {
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTimeline: typeof import('element-plus/es')['ElTimeline']
+    ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     Navtree: typeof import('./src/components/Navtree.vue')['default']

@@ -8,6 +8,12 @@
         后台管理员密码
         <input type="password"  v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
         <button @click="proofreadKey(Tempkey)" >确认</button>
+        <div>
+          <h3>更新日志 V0.2.3</h3>
+          <li>恢复富文本和MD兼容</li>
+          <li>添加审核页面</li>
+          <li>删除操作会进行二次确认</li>
+        </div>
       </div> 
     <!-- 临时守卫 -->
       <div ref="screen" class="screen" v-show="is">

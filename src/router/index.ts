@@ -63,6 +63,13 @@ const routes = [
       title:"审核",
     },
   },
+  {
+    path: '/log',
+    component: () => import('@/views/log.vue'),
+    meta: {
+      title:"日志",
+    },
+  },
 ]
 
 const router = createRouter({

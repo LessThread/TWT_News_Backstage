@@ -20,7 +20,7 @@
             :style="
               defaultActive.split('/')[1] === 'home' ? 'color:#00a0e9;' : ''
             "
-            >主页</span
+            >轮播图</span
           >
         </template>
         <el-menu-item index="/home/carouselPublish" class="nav-subtitle"
@@ -30,6 +30,8 @@
           >轮播图管理</el-menu-item
         >
       </el-sub-menu>
+
+
       <el-menu-item index="/publish">
         <img
           :src="
@@ -41,6 +43,8 @@
         />
         <span class="nav-title">发布</span>
       </el-menu-item>
+
+
       
       <el-menu-item index="/examination">
         <img
@@ -54,6 +58,8 @@
         <span class="nav-title">审核</span>
       </el-menu-item>
 
+
+
       <el-menu-item index="/news">
         <img
           :src="
@@ -65,6 +71,9 @@
         />
         <span class="nav-title">新闻</span>
       </el-menu-item>
+
+
+
       <el-menu-item index="/submit">
         <img
           :src="
@@ -75,6 +84,9 @@
           class="nav-icon"
         />
         <span class="nav-title">投稿</span>
+
+
+
       </el-menu-item>
       <el-menu-item index="/access">
         <img
@@ -87,6 +99,21 @@
         />
         <span class="nav-title">权限</span>
       </el-menu-item>
+
+
+      <el-menu-item index="/log">
+        <img
+          :src="
+            defaultActive.split('/')[1] === 'log'
+              ? require('flag_active.svg')
+              : require('flag.svg')
+          "
+          class="nav-icon"
+        />
+        <span class="nav-title">日志</span>
+      </el-menu-item>
+
+      
 
 
 

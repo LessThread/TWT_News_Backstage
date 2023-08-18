@@ -65,3 +65,16 @@ export function updateNews(data) {
         data
     })
 }
+
+export function creatLog(data) {
+    return http.post({
+        url: '/log/add',
+        data
+    })
+}
+
+export function getLogCnt() {
+    return http.get({
+        url: '/log/cnt',
+    })
+}
