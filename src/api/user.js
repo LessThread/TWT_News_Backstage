@@ -78,3 +78,9 @@ export function getLogCnt() {
         url: '/log/cnt',
     })
 }
+
+export function getPointNews(id) {
+    return http.get({
+        url: `/art/select/${id}`,
+    })
+}

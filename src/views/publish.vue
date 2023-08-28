@@ -230,7 +230,7 @@
 </template>
 
 <script>
-import { getCategory, uploadImg, postNews, updateNews } from "@/api/user";
+import { getCategory, uploadImg, postNews, updateNews,getPointNews } from "@/api/user";
 import { BASE_URL } from "@/utils/request/config";
 
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
@@ -301,6 +301,15 @@ export default {
       })
     }
 
+    const notification = (info) =>{
+      ElNotification({
+        title: '提示',
+        message: info,
+        type: 'info',
+        position: 'bottom-right',
+      })
+    }
+
     return {
       editorRef,
       valueHtml,
@@ -309,7 +318,8 @@ export default {
       editorConfig,
       handleCreated,
       getRecoverMsg,
-      tips1
+      tips1,
+      notification
     };
 
   },
@@ -449,6 +459,7 @@ export default {
     this.autoSave();
     this.autoRecover();
     this.tips1();
+    this.getInfoFormEdit();
   },
   beforeDestroy() {
     window.removeEventListener("beforeunload", (e) => this.beforeunloadFn(e));
@@ -467,6 +478,46 @@ export default {
     },
   },
   methods: {
+    //从跳转来的url获取信息
+    getInfoFormEdit(){
+      let url = window.location.href;
+      let id = url.match(/id=([^&]*)/)[1];
+
+      this.title = decodeURIComponent(url.match(/title=([^&]*)/)[1]);
+      this.status = url.match(/status=([^&]*)/)[1];
+      this.origin = decodeURIComponent(url.match(/origin=([^&]*)/)[1]);
+
+
+      
+      let that = this;
+      getPointNews(id).then((res)=>{
+        console.log(res)
+
+        //下面是正文部分
+        that.text = res.result.text;
+
+        //下面设置图片部分
+        that.imageId_1 = res.result.coverImageId
+        that.imageId_2 = res.result.bannerImageId
+
+        let imag1 = {
+          name: 'imag1',
+          url: 'https://news.twt.edu.cn/imgbed/download/'+that.imageId_1,
+        }
+
+        let imag2 = {
+          name: 'imag2',
+          url: 'https://news.twt.edu.cn/imgbed/download/'+that.imageId_2,
+        }
+
+        that.fileList_1.push(imag1)
+        that.fileList_2.push(imag1) 
+
+        this.notification("如果您想更改图片,请先删除之前的额😄")
+        
+      })
+      
+    },
     autoRecover(){
       let RecoverText = localStorage.getItem('SavedText');
       if((RecoverText !== '<p><br></p>') || (localStorage.getItem('SavedTitle') !== '')){
@@ -485,7 +536,7 @@ export default {
     //编辑内容自动保存
     autoSave(){
       this.intervalId = setInterval(() => {
-          console.log("已自动保存");
+          
           localStorage.setItem('SavedText',this.text);
           localStorage.setItem('SavedTitle',this.title);
           localStorage.setItem('SavedOrigin',this.origin);
