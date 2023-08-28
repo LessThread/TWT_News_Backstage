@@ -1,29 +1,28 @@
 <template>
     <div class="access">
       <p class="title">日志</p>
+      <div>
+        <h4>日志总数：{{ LogCnt }}</h4>
+  
+        <div style="display: flex;margin-top:10px;margin-bottom:20px">
+            <p style="align-self: center">选择页码</p>
+            <div style="width:25%;left:0;display: inline-block">
+              <el-pagination layout="prev, pager, next" :total="50" />
+            </div>
+        </div>
+  
+        <div>
+            <el-timeline>
+              <el-timeline-item
+                v-for="(activity, index) in activities"
+                :key="index"
+                :timestamp="activity.timestamp"
+              >
+                <p style="font-size: 20px;">{{ activity.content }}</p>
+              </el-timeline-item>
+            </el-timeline>
+        </div>
     </div>
-
-    <div>
-      <h4>日志总数：{{ LogCnt }}</h4>
-
-      <div>
-          <div class="example-pagination-block">
-            <div class="example-demonstration">选择页码</div>
-            <el-pagination layout="prev, pager, next" :total="50" />
-          </div>
-      </div>
-
-      <div>
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in activities"
-              :key="index"
-              :timestamp="activity.timestamp"
-            >
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-      </div>
 
     </div>
 
@@ -44,15 +43,15 @@
       const LogList = ref([])
       const activities = [
       {
-        content: 'Event start',
+        content: '添加了新闻《原神4.0更新》',
         timestamp: '2018-04-15',
       },
       {
-        content: 'Approved',
+        content: '添加了新闻《棋手战鹰，“抽象”的“直播奇才”》',
         timestamp: '2018-04-13',
       },
       {
-        content: 'Success',
+        content: '我是一条测试日志',
         timestamp: '2018-04-11',
       },
     ]

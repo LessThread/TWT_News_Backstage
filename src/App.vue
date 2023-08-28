@@ -3,19 +3,21 @@
     <MainHeader />
     <div class="content">
       <Navtree class="nav" />
+
       <!-- 临时守卫 -->
       <div class="TempkeyBox" v-show="!is">
         后台管理员密码
         <input type="password"  v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
         <button @click="proofreadKey(Tempkey)" >确认</button>
-        <div>
-          <h3>更新日志 V0.2.3</h3>
-          <li>恢复富文本和MD兼容</li>
-          <li>添加审核页面</li>
-          <li>删除操作会进行二次确认</li>
-        </div>
+        <!-- <div>
+          <h3>更新日志 V0.2.4</h3>
+          <li>更新时间 2023-8-28</li>
+          <li>添加了编辑恢复功能,每2秒钟会自动保存一次</li>
+          <li>添加日志页面(未实现)</li>
+        </div> -->
       </div> 
     <!-- 临时守卫 -->
+
       <div ref="screen" class="screen" v-show="is">
         <router-view></router-view>
       </div>
@@ -28,6 +30,19 @@
 import Navtree from "@/components/Navtree.vue";
 import MainHeader from "@/components/MainHeader.vue";
 export default {
+  setup(){
+    const UpdateMsg = () => {
+      ElNotification({
+        title: '后台已更新',
+        message: '2023-0828:添加了编辑恢复功能,每2秒钟会自动保存一次,添加日志页面(但未实现)',
+        type: 'info',
+      })
+    };
+
+    return{
+      UpdateMsg
+    }
+  },
   data() {
     return {
       is:0,
@@ -45,6 +60,10 @@ export default {
       console.log(isPassword);
       if(isPassword==1){
         this.is=1
+      }
+      if(localStorage.getItem("UpdateDate")!== '20230828'){
+        localStorage.setItem("UpdateDate",'20230828');
+        this.UpdateMsg();
       }
     },
   methods: {

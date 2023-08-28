@@ -284,13 +284,32 @@ export default {
 
     //editorConfig.MENU_CONF['uploadImage'] = {}
 
+    const getRecoverMsg = () => {
+      ElNotification({
+        title: '😎',
+        message: '已恢复您之前的编辑内容',
+        type: 'warning',
+      })
+    }
+
+    const tips1 = () => {
+      ElNotification({
+        title: '提示',
+        message: '如果发布成功但是没看到文章,请先检查审核页面🥰,文章清空按钮在最下面',
+        type: 'info',
+        position: 'bottom-right',
+      })
+    }
+
     return {
       editorRef,
       valueHtml,
       mode: 'simple', // 或 'simple'
       toolbarConfig,
       editorConfig,
-      handleCreated
+      handleCreated,
+      getRecoverMsg,
+      tips1
     };
 
   },
@@ -427,6 +446,9 @@ export default {
     this.dateFormat();
     this.getCategory();
     this.setInitData();
+    this.autoSave();
+    this.autoRecover();
+    this.tips1();
   },
   beforeDestroy() {
     window.removeEventListener("beforeunload", (e) => this.beforeunloadFn(e));
@@ -445,6 +467,36 @@ export default {
     },
   },
   methods: {
+    autoRecover(){
+      let RecoverText = localStorage.getItem('SavedText');
+      if((RecoverText !== '<p><br></p>') || (localStorage.getItem('SavedTitle') !== '')){
+        this.getRecoverMsg();
+        this.text = localStorage.getItem('SavedText');
+        this.title = localStorage.getItem('SavedTitle');
+        this.origin = localStorage.getItem('SavedOrigin');
+
+        this.contributorName = localStorage.getItem('SavedName').split("$")[0];
+        this.photographerName = localStorage.getItem('SavedName').split("$")[1];
+
+        this.reviewerName = localStorage.getItem('SavedReviewerName');
+      }
+      
+    },
+    //编辑内容自动保存
+    autoSave(){
+      this.intervalId = setInterval(() => {
+          console.log("已自动保存");
+          localStorage.setItem('SavedText',this.text);
+          localStorage.setItem('SavedTitle',this.title);
+          localStorage.setItem('SavedOrigin',this.origin);
+          localStorage.setItem('SavedName',this.contributorName+"$"+this.photographerName);
+          localStorage.setItem('SavedReviewerName',this.reviewerName);
+      }, 2000);
+    },
+    stopAutoSave() {
+      clearInterval(this.intervalId);
+    },
+    //
     changeEditor(){
       this.MdOrText=!this.MdOrText;
     },
@@ -549,6 +601,9 @@ export default {
       this.centerDialogVisible = true;
     },
     confirmPost() {
+      //清空自动保存
+      localStorage.setItem('SavedText','<p><br></p>');
+
       this.uploadLoading = true;
       let promiseArr = [];
       if (this.imageId_1 === 0) {
