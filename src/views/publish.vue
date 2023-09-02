@@ -199,6 +199,8 @@
         >清空</el-button
       >
     </div>
+
+
     <el-dialog v-model="dialogVisible">
       <img w-full :src="dialogImageUrl" alt="Preview Image" />
     </el-dialog>
@@ -286,28 +288,45 @@ export default {
 
     const getRecoverMsg = () => {
       ElNotification({
-        title: '😎',
-        message: '已恢复您之前的编辑内容',
+        title: '提示',
+        message: '已恢复您上次的编辑内容',
         type: 'warning',
       })
     }
 
-    const tips1 = () => {
-      ElNotification({
-        title: '提示',
-        message: '如果发布成功但是没看到文章,请先检查审核页面🥰,文章清空按钮在最下面',
-        type: 'info',
-        position: 'bottom-right',
-      })
-    }
-
-    const notification = (info) =>{
+    const notification = (info,pos) =>{
       ElNotification({
         title: '提示',
         message: info,
         type: 'info',
-        position: 'bottom-right',
+        position: pos,
       })
+    }
+
+    //清空二次确认
+    const  emptyHandleClose = () => {
+      let res = ElMessageBox.confirm('真的要清空内容吗,这将会失去所有自动保存的内容',
+      'Warning',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          ElMessage({
+            type: 'success',
+            message: 'Delete completed',
+          })
+          return true;
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+          return false;
+        })
+      return res
     }
 
     return {
@@ -318,8 +337,8 @@ export default {
       editorConfig,
       handleCreated,
       getRecoverMsg,
-      tips1,
-      notification
+      notification,
+      emptyHandleClose,
     };
 
   },
@@ -458,7 +477,12 @@ export default {
     this.setInitData();
     this.autoSave();
     this.autoRecover();
-    this.tips1();
+
+    setTimeout(()=>{
+      this.notification('如果这不是您需要的文章,清空按钮在最下面','top-right');
+    }, 1000); 
+    this.notification('如果发布成功但是没看到文章,请先检查审核页面🥰','bottom-right');
+
     this.getInfoFormEdit();
   },
   beforeDestroy() {
@@ -481,8 +505,13 @@ export default {
     //从跳转来的url获取信息
     getInfoFormEdit(){
       let url = window.location.href;
-      let id = url.match(/id=([^&]*)/)[1];
+      
+      //检查ID参数，如果是新闻从头开始编辑就跳过此函数
+      if(url.match(/id=([^&]*)/) === null){
+        return
+      }
 
+      let id = url.match(/id=([^&]*)/)[1];
       this.title = decodeURIComponent(url.match(/title=([^&]*)/)[1]);
       this.status = url.match(/status=([^&]*)/)[1];
       this.origin = decodeURIComponent(url.match(/origin=([^&]*)/)[1]);
@@ -495,6 +524,11 @@ export default {
 
         //下面是正文部分
         that.text = res.result.text;
+        that.title = res.result.title;
+        that.origin = res.result.origin;
+        that.contributorName = res.result.contributorName.split("$")[0];
+        that.photographerName = res.result.contributorName.split("$")[1];
+        that.reviewerName = res.result.reviewerName;
 
         //下面设置图片部分
         that.imageId_1 = res.result.coverImageId
@@ -513,7 +547,7 @@ export default {
         that.fileList_1.push(imag1)
         that.fileList_2.push(imag1) 
 
-        this.notification("如果您想更改图片,请先删除之前的额😄")
+        this.notification("如果您想更改图片,请先删除之前的😄")
         
       })
       
@@ -536,13 +570,12 @@ export default {
     //编辑内容自动保存
     autoSave(){
       this.intervalId = setInterval(() => {
-          
           localStorage.setItem('SavedText',this.text);
           localStorage.setItem('SavedTitle',this.title);
           localStorage.setItem('SavedOrigin',this.origin);
           localStorage.setItem('SavedName',this.contributorName+"$"+this.photographerName);
           localStorage.setItem('SavedReviewerName',this.reviewerName);
-      }, 2000);
+      }, 1000);
     },
     stopAutoSave() {
       clearInterval(this.intervalId);
@@ -707,7 +740,23 @@ export default {
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
-              this.empty();
+              //empty因为有二次确认,这里就直接换成匿名函数了
+              //this.empty();
+              (()=>{
+                this.title = "";
+                this.origin = "";
+                this.contributorName = "";
+                this.reviewerName = "";
+                this.photographerName = '';
+                this.categoryId = "";
+                this.tagNameList = [];
+                this.status = [2];
+                this.fileList_1 = [];
+                this.fileList_2 = [];
+                this.imageId_1 = 0;
+                this.imageId_2 = 0;
+                this.text = "";
+                    })();
               this.getCategory();
               this.uploadLoading = false;
               ElMessage.success("发布成功");
@@ -737,7 +786,24 @@ export default {
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
-              this.empty();
+              
+              //this.empty();
+              (()=>{
+                this.title = "";
+                this.origin = "";
+                this.contributorName = "";
+                this.reviewerName = "";
+                this.photographerName = '';
+                this.categoryId = "";
+                this.tagNameList = [];
+                this.status = [2];
+                this.fileList_1 = [];
+                this.fileList_2 = [];
+                this.imageId_1 = 0;
+                this.imageId_2 = 0;
+                this.text = "";
+                    })();
+
               this.getCategory();
               this.uploadLoading = false;
               ElMessage.success("编辑成功");
@@ -759,18 +825,26 @@ export default {
       }
     },
     empty() {
-      this.title = "";
-      this.origin = "";
-      this.contributorName = "";
-      this.reviewerName = "";
-      this.categoryId = "";
-      this.tagNameList = [];
-      this.status = [2];
-      this.fileList_1 = [];
-      this.fileList_2 = [];
-      this.imageId_1 = 0;
-      this.imageId_2 = 0;
-      this.text = "";
+      this.emptyHandleClose().then(res =>{
+        if(res === false){
+          return
+        }
+        else{
+          this.title = "";
+          this.origin = "";
+          this.contributorName = "";
+          this.reviewerName = "";
+          this.photographerName = '';
+          this.categoryId = "";
+          this.tagNameList = [];
+          this.status = [2];
+          this.fileList_1 = [];
+          this.fileList_2 = [];
+          this.imageId_1 = 0;
+          this.imageId_2 = 0;
+          this.text = "";
+        }
+      })
     },
     fileChange(file, files) {
       this.fileList = [file];

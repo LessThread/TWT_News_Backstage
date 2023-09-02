@@ -34,8 +34,9 @@ export default {
     const UpdateMsg = () => {
       ElNotification({
         title: '后台已更新',
-        message: '2023-0828:添加了编辑恢复功能,每2秒钟会自动保存一次,添加日志页面(但未实现)',
+        message: '2023-0902:修复了编辑恢复功能在重新进入时数据缺失的问题,对清空操作增加了二次确认,祝您使用愉快🥰',
         type: 'info',
+        duration:0
       })
     };
 
@@ -61,8 +62,8 @@ export default {
       if(isPassword==1){
         this.is=1
       }
-      if(localStorage.getItem("UpdateDate")!== '20230828'){
-        localStorage.setItem("UpdateDate",'20230828');
+      if(localStorage.getItem("UpdateDate")!== '2023-0902'){
+        localStorage.setItem("UpdateDate",'2023-0902');
         this.UpdateMsg();
       }
     },
