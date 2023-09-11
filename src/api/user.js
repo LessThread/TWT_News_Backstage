@@ -84,3 +84,16 @@ export function getPointNews(id) {
         url: `/art/select/${id}`,
     })
 }
+
+export function getLogsByPage(page,size){
+    return http.get({
+        url:`/log/select/${page}/${size}`
+    })
+}
+
+export function addLog(data){
+    return http.post({
+        url:`/log/add`,
+        data
+    })
+}

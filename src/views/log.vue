@@ -7,18 +7,24 @@
         <div style="display: flex;margin-top:10px;margin-bottom:20px">
             <p style="align-self: center">选择页码</p>
             <div style="width:25%;left:0;display: inline-block">
-              <el-pagination layout="prev, pager, next" :total="50" />
+              <el-pagination layout="prev, pager, next" 
+              :total="(parseInt((LogCnt/ LogPageSize))*10)?(parseInt((LogCnt/ LogPageSize))*10):(1)" 
+              v-model:current-page="CurrentPage"
+              />
             </div>
         </div>
   
-        <div>
+        <div style="width: 30%;">
             <el-timeline>
               <el-timeline-item
-                v-for="(activity, index) in activities"
+                v-for="(activity, index) in LogList"
                 :key="index"
-                :timestamp="activity.timestamp"
+                
               >
-                <p style="font-size: 20px;">{{ activity.content }}</p>
+              <el-divider content-position="left">{{ activity.releaseTime }}&nbsp;操作人:{{activity.operator}}</el-divider>
+                <p></p>
+                <p style="font-size: 20px;">{{activity.operation}}</p>
+                <br/>
               </el-timeline-item>
             </el-timeline>
         </div>
@@ -31,30 +37,18 @@
   </template>
 
   <script>
-  import { getCategory, uploadImg, postNews, updateNews ,getLogCnt} from "@/api/user";
+  import { getCategory, uploadImg, postNews, updateNews ,getLogCnt,getLogsByPage,addLog} from "@/api/user";
   import { BASE_URL } from "@/utils/request/config";
-  import { onBeforeUnmount, ref, shallowRef, onMounted} from 'vue'
+  import { onBeforeUnmount, ref, shallowRef, onMounted,watch} from 'vue'
   import {ROOT_URL} from '@/global.js'
 
   export default{
     setup()
     {
       const LogCnt = ref()
+      const CurrentPage = ref(1)
       const LogList = ref([])
-      const activities = [
-      {
-        content: '添加了新闻《原神4.0更新》',
-        timestamp: '2018-04-15',
-      },
-      {
-        content: '添加了新闻《棋手战鹰，“抽象”的“直播奇才”》',
-        timestamp: '2018-04-13',
-      },
-      {
-        content: '我是一条测试日志',
-        timestamp: '2018-04-11',
-      },
-    ]
+      const LogPageSize = 10;
       
       let setLogCont = function(){
         getLogCnt().then(res => {
@@ -62,13 +56,45 @@
         })
       }
 
+      let getLogs = function(){
+        getLogsByPage(CurrentPage.value, LogPageSize).then(res => {
+          for (let item of res.result){
+            LogList.value.push({
+              "operator": item.operator,
+              "operation": item.operation,
+              "articleId": item.articleId,
+              "releaseTime": item.releaseTime
+            })
+          }
+          
+        })
+      }
+
       onMounted(() => {
         setLogCont()
+        getLogs()
       }); 
+
+      watch(CurrentPage, (newValue, oldValue) => {
+        getLogsByPage(CurrentPage.value, LogPageSize).then(res => {
+          LogList.value = [];
+          for (let item of res.result){
+            console.log(item)
+            LogList.value.push({
+              "operator": item.operator,
+              "operation": item.operation,
+              "articleId": item.articleId,
+              "releaseTime": item.releaseTime
+            })
+          }
+        })
+      })
 
       return{
         LogCnt,
-        activities
+        LogList,
+        CurrentPage,
+        LogPageSize
       }
     }
   }
