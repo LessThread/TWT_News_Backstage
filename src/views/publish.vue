@@ -3,60 +3,28 @@
     <p class="title">{{ pageTitle }}</p>
     <div class="flexLine">
       <p class="tagText">标题：</p>
-      <el-input
-        class="flexGrow"
-        v-model="title"
-        maxlength="50"
-        placeholder="请输入新闻标题"
-        show-word-limit
-        type="text"
-      />
+      <el-input class="flexGrow" v-model="title" maxlength="50" placeholder="请输入新闻标题" show-word-limit type="text" />
     </div>
     <div class="flexLine">
       <p class="tagText">来源：</p>
-      <el-input
-        class="flexGrow"
-        v-model="origin"
-        maxlength="50"
-        placeholder="请输入新闻来源"
-        show-word-limit
-        type="text"
-      />
+      <el-input class="flexGrow" v-model="origin" maxlength="50" placeholder="请输入新闻来源" show-word-limit type="text" />
     </div>
     <div class="flexLine">
       <p class="tagText">供稿：</p>
-      <el-input
-        class="flexGrow"
-        v-model="contributorName"
-        maxlength="50"
-        placeholder="请输入新闻供稿人"
-        show-word-limit
-        type="text"
-      />
+      <el-input class="flexGrow" v-model="contributorName" maxlength="50" placeholder="请输入新闻供稿人" show-word-limit
+        type="text" />
     </div>
 
     <div class="flexLine">
       <p class="tagText">供图：</p>
-      <el-input
-        class="flexGrow"
-        v-model="photographerName"
-        maxlength="50"
-        placeholder="请输入新闻供图人"
-        show-word-limit
-        type="text"
-      />
+      <el-input class="flexGrow" v-model="photographerName" maxlength="50" placeholder="请输入新闻供图人" show-word-limit
+        type="text" />
     </div>
 
     <div class="flexLine">
       <p class="tagText">审稿：</p>
-      <el-input
-        class="flexGrow"
-        v-model="reviewerName"
-        maxlength="50"
-        placeholder="请输入新闻审稿人"
-        show-word-limit
-        type="text"
-      />
+      <el-input class="flexGrow" v-model="reviewerName" maxlength="50" placeholder="请输入新闻审稿人" show-word-limit
+        type="text" />
     </div>
     <div class="flexLine">
       <p class="tagText">分类：</p>
@@ -105,35 +73,23 @@
     </div>
     <div class="flexLine alignTop">
       <p class="tagText">添加封面图：</p>
-      <el-upload
-        :class="{ 'hide-upload-btn': photoHide_1 }"
-        :limit="1"
-        :file-list="fileList_1"
-        accept="image/*"
-        :auto-upload="false"
-        list-type="picture-card"
-        :on-preview="handlePictureCardPreview"
-        :on-change="fileChange_1"
-        :on-remove="fileRemove_1"
-      >
-        <el-icon><Plus /></el-icon>
+      <el-upload :class="{ 'hide-upload-btn': photoHide_1 }" :limit="1" :file-list="fileList_1" accept="image/*"
+        :auto-upload="false" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-change="fileChange_1"
+        :on-remove="fileRemove_1">
+        <el-icon>
+          <Plus />
+        </el-icon>
       </el-upload>
       <p class="tagText marginLeft">（新闻的封面图）</p>
     </div>
     <div class="flexLine alignTop">
       <p class="tagText">添加横幅图：</p>
-      <el-upload
-        :class="{ 'hide-upload-btn': photoHide_2 }"
-        :limit="1"
-        :file-list="fileList_2"
-        accept="image/*"
-        :auto-upload="false"
-        list-type="picture-card"
-        :on-preview="handlePictureCardPreview"
-        :on-change="fileChange_2"
-        :on-remove="fileRemove_2"
-      >
-        <el-icon><Plus /></el-icon>
+      <el-upload :class="{ 'hide-upload-btn': photoHide_2 }" :limit="1" :file-list="fileList_2" accept="image/*"
+        :auto-upload="false" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-change="fileChange_2"
+        :on-remove="fileRemove_2">
+        <el-icon>
+          <Plus />
+        </el-icon>
       </el-upload>
       <p class="tagText marginLeft">（新闻详情页上方的横版大图）</p>
     </div>
@@ -141,63 +97,37 @@
       <p class="tagText">新闻内容：</p>
 
       <div>
-        <el-button type="primary" size="large" @click="changeEditor">切换为{{MdOrText?"富文本":"MD"}}编辑器 当前是{{MdOrText?"MD":"富文本"}}</el-button>
+        <el-button type="primary" size="large" @click="changeEditor">切换为{{ MdOrText ? "富文本" : "MD" }}编辑器
+          当前是{{ MdOrText ? "MD" : "富文本" }}</el-button>
       </div>
 
       <div v-show="MdOrText">
-        <v-md-editor
-        v-model="text"
-        height="32rem"
-        :toolbar="toolbar"
-        :disabled-menus="[]"
-        @upload-image="handleUploadImage"
-        left-toolbar="h bold italic strikethrough quote | ul ol table hr | customToolbar1 customToolbar2 customToolbar3 customToolbar4 customToolbar5 | link image code | undo redo clear | save export import"
-      >
-      </v-md-editor>
+        <v-md-editor v-model="text" height="32rem" :toolbar="toolbar" :disabled-menus="[]"
+          @upload-image="handleUploadImage"
+          left-toolbar="h bold italic strikethrough quote | ul ol table hr | customToolbar1 customToolbar2 customToolbar3 customToolbar4 customToolbar5 | link image code | undo redo clear | save export import">
+        </v-md-editor>
       </div>
-      
+
       <div v-show="!MdOrText">
-      <div style="border: 1px solid #ccc">
-        <Toolbar
-          style="border-bottom: 1px solid #ccc"
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-          :mode="mode"
-        />
-        <Editor
-          style="height: 500px; overflow-y: hidden;"
-          v-model="text"
-          :defaultConfig="editorConfig"
-          :mode="mode"
-          @onCreated="handleCreated"
-        />
-      </div>
-      <div style="margin-top: 10px;display: flex">
-        <textarea
-          v-model="text"
-          readonly
-          style="width: 50%; height: 500px; outline: none"
-        ></textarea>
-        <div style="margin-top: 10px ;width: 50%; height: 500px; outline: none;overflow:scroll" >
-          <p v-html="text"></p>
+        <div style="border: 1px solid #ccc">
+          <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig"
+            :mode="mode" />
+          <Editor style="height: 500px; overflow-y: hidden;" v-model="text" :defaultConfig="editorConfig" :mode="mode"
+            @onCreated="handleCreated" />
+        </div>
+        <div style="margin-top: 10px;display: flex">
+          <textarea v-model="text" readonly style="width: 50%; height: 500px; outline: none"></textarea>
+          <div style="margin-top: 10px ;width: 50%; height: 500px; outline: none;overflow:scroll">
+            <p v-html="text"></p>
+          </div>
         </div>
       </div>
-    </div>
 
     </div>
     <div class="actionBar">
-      <el-button
-        class="confirmBtn margin50"
-        @click="confirm"
-        :loading="uploadLoading"
-        >{{ pageTitle === "编辑新闻" ? "确认" : "发布" }}</el-button
-      >
-      <el-button
-        class="cancelBtn margin50"
-        @click="empty"
-        :disabled="uploadLoading"
-        >清空</el-button
-      >
+      <el-button class="confirmBtn margin50" @click="confirm" :loading="uploadLoading">{{ pageTitle === "编辑新闻" ? "确认" :
+        "发布" }}</el-button>
+      <el-button class="cancelBtn margin50" @click="empty" :disabled="uploadLoading">清空</el-button>
     </div>
 
 
@@ -207,24 +137,16 @@
     <el-dialog v-model="centerDialogVisible" title="确认" center>
       <span class="bodySpan">{{
         pageTitle === "编辑新闻"
-          ? "您确认要编辑这条新闻吗"
-          : "您确认要发布这条新闻吗"
+        ? "您确认要编辑这条新闻吗"
+        : "您确认要发布这条新闻吗"
       }}</span>
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            class="cancelBtn marginRight40 dialogBtn"
-            @click="centerDialogVisible = false"
-            >取消</el-button
-          >
-          <el-button
-            class="confirmBtn dialogBtn"
-            @click="
-              centerDialogVisible = false;
-              confirmPost();
-            "
-            >{{ pageTitle === "编辑新闻" ? "确认" : "发布" }}</el-button
-          >
+          <el-button class="cancelBtn marginRight40 dialogBtn" @click="centerDialogVisible = false">取消</el-button>
+          <el-button class="confirmBtn dialogBtn" @click="
+            centerDialogVisible = false;
+          confirmPost();
+          ">{{ pageTitle === "编辑新闻" ? "确认" : "发布" }}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -232,13 +154,14 @@
 </template>
 
 <script>
-import { getCategory, uploadImg, postNews, updateNews,getPointNews } from "@/api/user";
+import { getCategory, uploadImg, postNews, updateNews, getPointNews, addLog } from "@/api/user";
 import { BASE_URL } from "@/utils/request/config";
 
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import {ROOT_URL} from '@/global.js'
+import { ROOT_URL } from '@/global.js'
+
 //import { IEditorConfig} from '@wangeditor/editor'
 
 
@@ -248,36 +171,36 @@ export default {
   setup() {
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
-    const editorConfig = {MENU_CONF: {}}
+    const editorConfig = { MENU_CONF: {} }
 
     // 内容 HTML
     const valueHtml = ref('<p>hello</p>')
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
-        setTimeout(() => {
-            valueHtml.value = '<p>Ajax 异步</p>'
-        }, 1500)
+      setTimeout(() => {
+        valueHtml.value = '<p>Ajax 异步</p>'
+      }, 1500)
     })
 
     const toolbarConfig = {}
-    
+
     editorConfig.MENU_CONF['uploadImage'] = {
       server: ROOT_URL + 'imgbed/upload',
       fieldName: 'img',
       customInsert(res, insertFn) {
-        let surl=ROOT_URL+ "imgbed/download/"+res.result;
+        let surl = ROOT_URL + "imgbed/download/" + res.result;
         // 从 res 中找到 url alt href ，然后插入图片
-        insertFn(surl,"","")
-    },
-}
+        insertFn(surl, "", "")
+      },
+    }
 
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
-        const editor = editorRef.value
-        if (editor == null) return
-        editor.destroy()
+      const editor = editorRef.value
+      if (editor == null) return
+      editor.destroy()
     })
 
     const handleCreated = (editor) => {
@@ -294,7 +217,7 @@ export default {
       })
     }
 
-    const notification = (info,pos) =>{
+    const notification = (info, pos) => {
       ElNotification({
         title: '提示',
         message: info,
@@ -304,14 +227,14 @@ export default {
     }
 
     //清空二次确认
-    const  emptyHandleClose = () => {
+    const emptyHandleClose = () => {
       let res = ElMessageBox.confirm('真的要清空内容吗,这将会失去所有自动保存的内容',
-      'Warning',
-      {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+        'Warning',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
         .then(() => {
           ElMessage({
             type: 'success',
@@ -342,12 +265,12 @@ export default {
     };
 
   },
-  
+
 
   data() {
     return {
-      MdOrText:0,
-      photographerName:"",
+      MdOrText: 0,
+      photographerName: "",
       photoHide_1: false,
       photoHide_2: false,
       page: 1,
@@ -431,39 +354,39 @@ export default {
           },
         },
         customToolbar4: {
-        title: '插入一个空格',
-        icon: 'v-md-icon-tip',
-        action(editor) {
-          editor.insert(function (selected) {
-            const prefix = '(((';
-            const suffix = ')))';
-            const placeholder = '&emsp;';
-            const content = selected || placeholder;
+          title: '插入一个空格',
+          icon: 'v-md-icon-tip',
+          action(editor) {
+            editor.insert(function (selected) {
+              const prefix = '(((';
+              const suffix = ')))';
+              const placeholder = '&emsp;';
+              const content = selected || placeholder;
 
-            return {
-              text: `${content}`,
-              selected: content,
-            };
-          });
+              return {
+                text: `${content}`,
+                selected: content,
+              };
+            });
+          },
         },
-      },
-      customToolbar5: {
-        title: '换行',
-        icon: 'v-md-icon-arrow-down',
-        action(editor) {
-          editor.insert(function (selected) {
-            const prefix = '(((';
-            const suffix = ')))';
-            const placeholder = '<br>';
-            const content = selected || placeholder;
+        customToolbar5: {
+          title: '换行',
+          icon: 'v-md-icon-arrow-down',
+          action(editor) {
+            editor.insert(function (selected) {
+              const prefix = '(((';
+              const suffix = ')))';
+              const placeholder = '<br>';
+              const content = selected || placeholder;
 
-            return {
-              text: `${content}`,
-              selected: content,
-            };
-          });
+              return {
+                text: `${content}`,
+                selected: content,
+              };
+            });
+          },
         },
-      },
       },
     };
   },
@@ -478,10 +401,10 @@ export default {
     this.autoSave();
     this.autoRecover();
 
-    setTimeout(()=>{
-      this.notification('如果这不是您需要的文章,清空按钮在最下面','top-right');
-    }, 1000); 
-    this.notification('如果发布成功但是没看到文章,请先检查审核页面🥰','bottom-right');
+    setTimeout(() => {
+      this.notification('如果这不是您需要的文章,清空按钮在最下面', 'top-right');
+    }, 1000);
+    this.notification('如果发布成功但是没看到文章,请先检查审核页面🥰', 'bottom-right');
 
     this.getInfoFormEdit();
   },
@@ -498,16 +421,16 @@ export default {
     $route() {
       this.setInitData();
       this.getCategory();
-      
+
     },
   },
   methods: {
     //从跳转来的url获取信息
-    getInfoFormEdit(){
+    getInfoFormEdit() {
       let url = window.location.href;
-      
+
       //检查ID参数，如果是新闻从头开始编辑就跳过此函数
-      if(url.match(/id=([^&]*)/) === null){
+      if (url.match(/id=([^&]*)/) === null) {
         return
       }
 
@@ -517,9 +440,9 @@ export default {
       this.origin = decodeURIComponent(url.match(/origin=([^&]*)/)[1]);
 
 
-      
+
       let that = this;
-      getPointNews(id).then((res)=>{
+      getPointNews(id).then((res) => {
         console.log(res)
 
         //下面是正文部分
@@ -536,25 +459,25 @@ export default {
 
         let imag1 = {
           name: 'imag1',
-          url: 'https://news.twt.edu.cn/imgbed/download/'+that.imageId_1,
+          url: 'https://news.twt.edu.cn/imgbed/download/' + that.imageId_1,
         }
 
         let imag2 = {
           name: 'imag2',
-          url: 'https://news.twt.edu.cn/imgbed/download/'+that.imageId_2,
+          url: 'https://news.twt.edu.cn/imgbed/download/' + that.imageId_2,
         }
 
         that.fileList_1.push(imag1)
-        that.fileList_2.push(imag1) 
+        that.fileList_2.push(imag1)
 
         this.notification("如果您想更改图片,请先删除之前的😄")
-        
+
       })
-      
+
     },
-    autoRecover(){
+    autoRecover() {
       let RecoverText = localStorage.getItem('SavedText');
-      if((RecoverText !== '<p><br></p>') || (localStorage.getItem('SavedTitle') !== '')){
+      if ((RecoverText !== '<p><br></p>') || (localStorage.getItem('SavedTitle') !== '')) {
         this.getRecoverMsg();
         this.text = localStorage.getItem('SavedText');
         this.title = localStorage.getItem('SavedTitle');
@@ -565,24 +488,24 @@ export default {
 
         this.reviewerName = localStorage.getItem('SavedReviewerName');
       }
-      
+
     },
     //编辑内容自动保存
-    autoSave(){
+    autoSave() {
       this.intervalId = setInterval(() => {
-          localStorage.setItem('SavedText',this.text);
-          localStorage.setItem('SavedTitle',this.title);
-          localStorage.setItem('SavedOrigin',this.origin);
-          localStorage.setItem('SavedName',this.contributorName+"$"+this.photographerName);
-          localStorage.setItem('SavedReviewerName',this.reviewerName);
+        localStorage.setItem('SavedText', this.text);
+        localStorage.setItem('SavedTitle', this.title);
+        localStorage.setItem('SavedOrigin', this.origin);
+        localStorage.setItem('SavedName', this.contributorName + "$" + this.photographerName);
+        localStorage.setItem('SavedReviewerName', this.reviewerName);
       }, 1000);
     },
     stopAutoSave() {
       clearInterval(this.intervalId);
     },
     //
-    changeEditor(){
-      this.MdOrText=!this.MdOrText;
+    changeEditor() {
+      this.MdOrText = !this.MdOrText;
     },
     beforeunloadFn() {
       if (!this.id)
@@ -686,7 +609,7 @@ export default {
     },
     confirmPost() {
       //清空自动保存
-      localStorage.setItem('SavedText','<p><br></p>');
+      localStorage.setItem('SavedText', '<p><br></p>');
 
       this.uploadLoading = true;
       let promiseArr = [];
@@ -713,36 +636,35 @@ export default {
             this.imageId_2 = res[0].result;
           }
           this.postNews(true);
-          this.photographerName="";
+          this.photographerName = "";
 
-          this.photoHide_2=false;
-          this.photoHide_1=false;
+          this.photoHide_2 = false;
+          this.photoHide_1 = false;
         }
       });
     },
     postNews(val) {
-      if(!this.MdOrText)
-      {
+      if (!this.MdOrText) {
         this.text = this.text + "@";
       }
       if (val) {
         postNews({
           title: this.title,
           origin: this.origin,
-          contributorName: this.contributorName+"$"+this.photographerName,
+          contributorName: this.contributorName + "$" + this.photographerName,
           reviewerName: this.reviewerName,
           status: this.status.length === 0 ? 0 : this.status[0],
           tagNameList: this.tagNameList,
           categoryId: this.categoryId,
           coverImageId: this.imageId_1,
           bannerImageId: this.imageId_2,
-          text:this.text,
+          text: this.text,
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
               //empty因为有二次确认,这里就直接换成匿名函数了
               //this.empty();
-              (()=>{
+              (() => {
                 this.title = "";
                 this.origin = "";
                 this.contributorName = "";
@@ -756,7 +678,7 @@ export default {
                 this.imageId_1 = 0;
                 this.imageId_2 = 0;
                 this.text = "";
-                    })();
+              })();
               this.getCategory();
               this.uploadLoading = false;
               ElMessage.success("发布成功");
@@ -770,6 +692,7 @@ export default {
             this.uploadLoading = false;
           });
       } else {
+        let that = this
         updateNews({
           id: this.id,
           title: this.title,
@@ -786,9 +709,30 @@ export default {
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
-              
+              //添加日志
+              var myHeaders = new Headers();
+              myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+
+              var formdata = new FormData();
+              formdata.append("operation", "123123");
+              formdata.append("articleId", 123123);
+
+              var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: formdata,
+                redirect: 'follow'
+              };
+
+              fetch("https://news.twt.edu.cn/api/log/add", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+              //addLog(this.id,"admin");
+              //
+
               //this.empty();
-              (()=>{
+              (() => {
                 this.title = "";
                 this.origin = "";
                 this.contributorName = "";
@@ -802,11 +746,12 @@ export default {
                 this.imageId_1 = 0;
                 this.imageId_2 = 0;
                 this.text = "";
-                    })();
+              })();
 
               this.getCategory();
               this.uploadLoading = false;
               ElMessage.success("编辑成功");
+
               this.$router.push({
                 path: "/news",
                 query: {
@@ -825,11 +770,11 @@ export default {
       }
     },
     empty() {
-      this.emptyHandleClose().then(res =>{
-        if(res === false){
+      this.emptyHandleClose().then(res => {
+        if (res === false) {
           return
         }
-        else{
+        else {
           this.title = "";
           this.origin = "";
           this.contributorName = "";
@@ -927,12 +872,14 @@ export default {
   border-radius: 16px;
   box-sizing: border-box;
 }
+
 .title {
   color: #2a2a2a;
   font-weight: 700;
   font-size: 24px;
   margin-bottom: 30px;
 }
+
 .flexLine {
   display: flex;
   width: 100%;
@@ -941,6 +888,7 @@ export default {
   font-size: 17px;
   margin-bottom: 20px;
 }
+
 .flexRow {
   display: flex;
   flex-direction: column;
@@ -949,41 +897,53 @@ export default {
   font-size: 17px;
   margin-bottom: 20px;
 }
+
 .tagText {
   margin-right: 5px;
 }
+
 .flexGrow {
   flex: 1;
 }
+
 .rowTextarea {
   margin-top: 10px;
 }
+
 .alignTop {
   align-items: flex-start;
 }
+
 .marginLeft {
   margin-left: 15px;
 }
+
 .actionBar {
   text-align: center;
 }
+
 .margin50 {
   margin: 0 50px;
 }
+
 .marginRight10 {
   margin-right: 10px;
 }
+
 .width120 {
   width: 120px;
 }
+
 .v-md-editor {
   margin-top: 10px;
 }
+
 .bodySpan {
   margin: 0 100px;
   color: #2a2a2a;
   font-size: 24px;
 }
+
 .marginRight40 {
   margin-right: 40px;
 }

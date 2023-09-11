@@ -66,13 +66,6 @@ export function updateNews(data) {
     })
 }
 
-export function creatLog(data) {
-    return http.post({
-        url: '/log/add',
-        data
-    })
-}
-
 export function getLogCnt() {
     return http.get({
         url: '/log/cnt',
@@ -91,9 +84,12 @@ export function getLogsByPage(page,size){
     })
 }
 
-export function addLog(data){
+export function addLog(id,o){
+    let formdata = new FormData();
+    formdata.append("operation", o);
+    formdata.append("articleId", id);
     return http.post({
         url:`/log/add`,
-        data
+        formdata
     })
 }
