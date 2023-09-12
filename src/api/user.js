@@ -78,18 +78,32 @@ export function getPointNews(id) {
     })
 }
 
-export function getLogsByPage(page,size){
+export function getLogsByPage(page, size) {
     return http.get({
-        url:`/log/select/${page}/${size}`
+        url: `/log/select/${page}/${size}`
     })
 }
 
-export function addLog(id,o){
+export function addLog(id, o) {
+
+    //这里的axio封装会导致问题，因此直接使用fetch方法
     let formdata = new FormData();
     formdata.append("operation", o);
     formdata.append("articleId", id);
-    return http.post({
-        url:`/log/add`,
-        formdata
-    })
+    formdata.append("operator", "admin");
+
+    let myHeaders = new Headers();
+    myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+
+    let requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    return fetch("https://news.twt.edu.cn/api/log/add", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
 }

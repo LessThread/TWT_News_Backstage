@@ -662,6 +662,9 @@ export default {
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
+              console.log(msg)
+              //addLog(this.id,"创建 ");
+
               //empty因为有二次确认,这里就直接换成匿名函数了
               //this.empty();
               (() => {
@@ -709,26 +712,10 @@ export default {
         })
           .then(({ code: code, message: msg }) => {
             if (code === 0) {
+
               //添加日志
-              var myHeaders = new Headers();
-              myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
 
-              var formdata = new FormData();
-              formdata.append("operation", "123123");
-              formdata.append("articleId", 123123);
-
-              var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: formdata,
-                redirect: 'follow'
-              };
-
-              fetch("https://news.twt.edu.cn/api/log/add", requestOptions)
-                .then(response => response.text())
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));
-              //addLog(this.id,"admin");
+              addLog(this.id,"修改 ");
               //
 
               //this.empty();

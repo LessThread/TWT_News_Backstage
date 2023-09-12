@@ -8,7 +8,7 @@
             <p style="align-self: center">选择页码</p>
             <div style="width:25%;left:0;display: inline-block">
               <el-pagination layout="prev, pager, next" 
-              :total="(parseInt((LogCnt/ LogPageSize))*10)?(parseInt((LogCnt/ LogPageSize))*10):(1)" 
+              :total="(Math.ceil(LogCnt/ LogPageSize))?(Math.ceil((LogCnt/ LogPageSize))*10):(1)" 
               v-model:current-page="CurrentPage"
               />
             </div>
@@ -23,7 +23,7 @@
               >
               <el-divider content-position="left">{{ activity.releaseTime }}&nbsp;操作人:{{activity.operator}}</el-divider>
                 <p></p>
-                <p style="font-size: 20px;">{{activity.operation}}</p>
+                <p style="font-size: 20px;">{{activity.operation}}&nbsp;文章ID:{{activity.articleId}}</p>
                 <br/>
               </el-timeline-item>
             </el-timeline>
