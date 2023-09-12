@@ -660,13 +660,17 @@ export default {
           bannerImageId: this.imageId_2,
           text: this.text,
         })
-          .then(({ code: code, message: msg }) => {
+          .then(({ code: code, message: msg ,result: res}) => {
             if (code === 0) {
-              console.log(msg)
-              //addLog(this.id,"创建 ");
+              addLog(res.id,"创建 ");
 
               //empty因为有二次确认,这里就直接换成匿名函数了
               //this.empty();
+              
+              this.getCategory();
+              this.uploadLoading = false;
+              ElMessage.success("发布成功");
+
               (() => {
                 this.title = "";
                 this.origin = "";
@@ -682,9 +686,7 @@ export default {
                 this.imageId_2 = 0;
                 this.text = "";
               })();
-              this.getCategory();
-              this.uploadLoading = false;
-              ElMessage.success("发布成功");
+
             } else {
               ElMessage.error(msg);
               this.uploadLoading = false;

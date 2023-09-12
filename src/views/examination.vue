@@ -142,6 +142,7 @@
     getCategoryName,
     deleteNews,
     changeNewsStatue,
+    addLog
   } from "@/api/user";
   import { BASE_URL } from "@/utils/request/config";
   import require from "@/utils/pub-use";
@@ -205,6 +206,7 @@
       toDelete(item) {
         deleteNews({ id: item.id }).then(({ code: code, message: msg }) => {
           if (code === 0) {
+            addLog(item.id,"删除 ")
             ElMessage.success("删除新闻成功");
             this.getNews();
           } else {
