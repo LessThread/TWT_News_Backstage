@@ -34,7 +34,7 @@ export default {
     const UpdateMsg = () => {
       ElNotification({
         title: '后台已更新',
-        message: '2023-0912:添加了日志功能.在添加,删除和修改文章时会添加日志',
+        message: '2023-0912:修复了在二次编辑时可能会丢失供图信息的bug,如果还有其他情况请联系',
         type: 'info',
         duration:0
       })
@@ -62,8 +62,8 @@ export default {
       if(isPassword==1){
         this.is=1
       }
-      if(localStorage.getItem("UpdateDate")!== '2023-0912'){
-        localStorage.setItem("UpdateDate",'2023-0912');
+      if(localStorage.getItem("UpdateDate")!== '2023-0924'){
+        localStorage.setItem("UpdateDate",'2023-0924');
         this.UpdateMsg();
       }
     },

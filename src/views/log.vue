@@ -70,6 +70,13 @@
         })
       }
 
+
+      //这里不显示文章ID的原因是后端不会返回已删除文章的name
+      let getArtName = function(id){
+        getPointNews(id).then(res =>{
+        })
+      }
+
       onMounted(() => {
         setLogCont()
         getLogs()

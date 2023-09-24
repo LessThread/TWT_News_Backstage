@@ -98,7 +98,9 @@
           </p>
           <p>{{ getCategoryName(item.categoryId) }}</p>
           <div></div>
-          <p>文/{{ item.contributorName }}</p>
+          <p>文/{{ item.contributorName.split("$")[0] }}</p>
+          <div></div>
+          <p>图/{{ (item.contributorName.indexOf("$")>0)?item.contributorName.split("$")[1]:"没有信息" }}</p>
           <div></div>
           <p>审/{{ item.reviewerName }}</p>
           <div></div>
@@ -166,7 +168,7 @@ export default {
           page: this.page,
           title: item.title,
           origin: item.origin,
-          contributorName: item.contributorName.slice(0,item.contributorName.indexOf("$")),
+          contributorName: item.contributorName.slice(0,item.contributorName.indexOf("$")+1),
           photographerName: item.contributorName.slice(item.contributorName.indexOf("$")+1),
           reviewerName: item.reviewerName,
           categoryId: item.categoryId,

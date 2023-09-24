@@ -451,6 +451,7 @@ export default {
         that.origin = res.result.origin;
         that.contributorName = res.result.contributorName.split("$")[0];
         that.photographerName = res.result.contributorName.split("$")[1];
+        console.log(that.photographerName)
         that.reviewerName = res.result.reviewerName;
 
         //下面设置图片部分
@@ -696,13 +697,15 @@ export default {
             ElMessage.error("发布失败");
             this.uploadLoading = false;
           });
-      } else {
+      } 
+      
+      else {
         let that = this
         updateNews({
           id: this.id,
           title: this.title,
           origin: this.origin,
-          contributorName: this.contributorName,
+          contributorName: this.contributorName + "$" + this.photographerName,
           reviewerName: this.reviewerName,
           status: this.status.length === 0 ? 0 : this.status[0],
           tagNameList: this.tagNameList,
