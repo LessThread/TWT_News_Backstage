@@ -163,8 +163,8 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { ROOT_URL } from '@/global.js'
+import { DomEditor } from '@wangeditor/editor'
 
-//import { IEditorConfig} from '@wangeditor/editor'
 
 
 
@@ -172,11 +172,15 @@ export default {
   components: { Editor, Toolbar },
   setup() {
     // 编辑器实例，必须用 shallowRef
+    const toolbarConfig = {}
     const editorRef = shallowRef()
     const editorConfig = { MENU_CONF: {} }
 
+    
+   
+
     // 内容 HTML
-    const valueHtml = ref('<p>hello</p>')
+    const valueHtml = ref('<p></p>')
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
@@ -185,9 +189,9 @@ export default {
       }, 1500)
     })
 
-    const toolbarConfig = {}
 
-    //在这里限制设置图片参数
+
+    //上传图片参数
     editorConfig.MENU_CONF['uploadImage'] = {
       server: ROOT_URL + 'imgbed/upload',
       fieldName: 'img',
@@ -199,16 +203,33 @@ export default {
       },
     }
 
-    // 上传视频的配置
-    // editorConfig.MENU_CONF['uploadVideo'] = {
-    //     server: ROOT_URL + 'imgbed/upload',
+    //上传视频的配置
+    editorConfig.MENU_CONF['uploadVideo'] = {
+        server: ROOT_URL + 'imgbed/upload',
+        maxFileSize: 20 * 1024 * 1024, // 20M
 
-    //     customInsert(res, insertFn) {                  
-    //       let surl = ROOT_URL + "imgbed/download/" + res.result;
-    //       // 从 res 中找到 url poster ，然后插入视频
-    //     insertFn(surl)
-    // },
-    // }
+        // customBrowseAndUpload(insertFn) {             // JS 语法
+        //   // 自己选择文件
+        //   // 自己上传文件，并得到视频 url poster
+        //   // 最后插入视频
+        //   insertFn(url, poster)
+        // }
+
+
+        async customUpload(file, insertFn) {                   // JS 语法
+        // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+        console.log(file);
+        let formData = new FormData();
+        formData.append("img", file);
+        uploadImg(formData).then(({ code: code, result: res }) => {
+          console.log(res)
+          let surl = ROOT_URL + "imgbed/download/" + res;
+          insertFn(surl)
+        });
+        
+      }
+    }
+
 
 
     // 组件销毁时，也及时销毁编辑器
@@ -220,6 +241,11 @@ export default {
 
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
+      console.log(editor.getAllMenuKeys())
+      toolbarConfig.insertKeys = {
+      index: 30, // 插入的位置，基于当前的 toolbarKeys
+      keys: ['uploadVideo']
+  }
     }
 
     
