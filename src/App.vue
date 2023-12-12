@@ -9,12 +9,6 @@
         后台管理员密码
         <input type="password"  v-model="Tempkey" placeholder="" @keyup.enter="proofreadKey(Tempkey)"/>
         <button @click="proofreadKey(Tempkey)" >确认</button>
-        <!-- <div>
-          <h3>更新日志 V0.2.4</h3>
-          <li>更新时间 2023-8-28</li>
-          <li>添加了编辑恢复功能,每2秒钟会自动保存一次</li>
-          <li>添加日志页面(未实现)</li>
-        </div> -->
       </div> 
     <!-- 临时守卫 -->
 
@@ -34,7 +28,7 @@ export default {
     const UpdateMsg = () => {
       ElNotification({
         title: '后台已更新',
-        message: '2023-0912:修复了在二次编辑时可能会丢失供图信息的bug,如果还有其他情况请联系',
+        message: '2023-1213:修复图片上传大小问题(现在可以上传5MB的图片),上传视频功能将在后续更新',
         type: 'info',
         duration:0
       })
@@ -62,8 +56,8 @@ export default {
       if(isPassword==1){
         this.is=1
       }
-      if(localStorage.getItem("UpdateDate")!== '2023-0924'){
-        localStorage.setItem("UpdateDate",'2023-0924');
+      if(localStorage.getItem("UpdateDate")!== '2023-1213'){
+        localStorage.setItem("UpdateDate",'2023-1213');
         this.UpdateMsg();
       }
     },

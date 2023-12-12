@@ -101,6 +101,7 @@
           当前是{{ MdOrText ? "MD" : "富文本" }}</el-button>
       </div>
 
+      <!-- 这个部分是md编辑器 -->
       <div v-show="MdOrText">
         <v-md-editor v-model="text" height="32rem" :toolbar="toolbar" :disabled-menus="[]"
           @upload-image="handleUploadImage"
@@ -108,6 +109,7 @@
         </v-md-editor>
       </div>
 
+      <!-- 这个部分是富文本编辑器 -->
       <div v-show="!MdOrText">
         <div style="border: 1px solid #ccc">
           <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig"
@@ -185,15 +187,28 @@ export default {
 
     const toolbarConfig = {}
 
+    //在这里限制设置图片参数
     editorConfig.MENU_CONF['uploadImage'] = {
       server: ROOT_URL + 'imgbed/upload',
       fieldName: 'img',
+      maxFileSize: 5 * 1024 * 1024, // 5M
       customInsert(res, insertFn) {
         let surl = ROOT_URL + "imgbed/download/" + res.result;
         // 从 res 中找到 url alt href ，然后插入图片
         insertFn(surl, "", "")
       },
     }
+
+    // 上传视频的配置
+    // editorConfig.MENU_CONF['uploadVideo'] = {
+    //     server: ROOT_URL + 'imgbed/upload',
+
+    //     customInsert(res, insertFn) {                  
+    //       let surl = ROOT_URL + "imgbed/download/" + res.result;
+    //       // 从 res 中找到 url poster ，然后插入视频
+    //     insertFn(surl)
+    // },
+    // }
 
 
     // 组件销毁时，也及时销毁编辑器
@@ -207,7 +222,7 @@ export default {
       editorRef.value = editor // 记录 editor 实例，重要！
     }
 
-    //editorConfig.MENU_CONF['uploadImage'] = {}
+    
 
     const getRecoverMsg = () => {
       ElNotification({
